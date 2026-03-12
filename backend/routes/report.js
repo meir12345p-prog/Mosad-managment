@@ -9,11 +9,18 @@ import { readCsvBuffer } from '../utiels/csvHelper.js';
 
 const report = express()
 
-report.post('/',authMiddleware,upload.single('file') , async (req, res) => {
+report.post('/',authMiddleware, upload.single('image') , async (req, res) => {
 
     try{
+        const {report} = req.body
+        const image = req.image
+        console.log(report,image);
+        
+        const {category , urgency , message} = JSON.parse(report)
+        console.log(category , urgency , message);
+        
+        
 
-        const {category , urgency , message} = req.body
         if(!category || !urgency || !message){
             if(req.file){
                 await fs.promises.unlink(req.file.path)
@@ -42,12 +49,12 @@ report.post('/',authMiddleware,upload.single('file') , async (req, res) => {
     }catch(err){
         console.log(err);
         
-       res.status(404).json({error:err}) 
+       res.status(404).json({error:err.message}) 
     }
 });
 
 
-report.post('/csv' , authMiddleware , csvUpload.single('csv') , async (req , res) =>{
+report.post('/csv' , authMiddleware , csvUpload.single('file') , async (req , res) =>{
     try{
 
         if(!req.file){
@@ -66,10 +73,12 @@ report.post('/csv' , authMiddleware , csvUpload.single('csv') , async (req , res
             sourceType:'csv',
             createAt : new Date().toDateString()
         }))
+        console.log(Reports);
+        
 
-        const dataRports = JSON.parse(await fs.promises.readFile('data/report.json','utf8'))
-        const newDataReport = [...dataRports]
-        await fs.promises.writeFile('data/report.json', JSON.stringify(newDataReport , null,2))
+        const dataRports =await JSON.parse(await fs.promises.readFile('data/report.json','utf8'))
+        const newDataReports = [...Reports , ...dataRports]
+        await fs.promises.writeFile('data/report.json', JSON.stringify(newDataReports , null,2))
 
         res.status(201).json({
             count : csvReports.length,
@@ -87,17 +96,16 @@ report.get('/' , authMiddleware , async (req , res) =>{
     const dataRports = JSON.parse(await fs.promises.readFile('data/report.json','utf8'))
     const { id , role} = req.payload
     const {category , urgency , message} = req.query;
-    let reports
+    let reports = dataRports 
 
-    if(role.toLowerCase() !== 'admin'){
+    if(role === 'agent'){
         reports = dataRports.filter(r => r.userId === id)
     }
 
-    else if(role.toLowerCase() !== 'admin'){
+    else if(role === 'admin'){
         if(category){
             reports = dataRports.filter(r => r.category === category)
         }
-
          if(urgency){
             reports = dataRports.filter(r => r.urgency === urgency)
         } 
@@ -105,11 +113,13 @@ report.get('/' , authMiddleware , async (req , res) =>{
             reports = dataRports.filter(r => r.message === message)
         }
     }
+    console.log(reports);
+    
 
-    res.status(201).json({report})
+    res.status(200).json(reports)
 }catch(err){
     console.log(err)
-    res.status(404).json({error:'faild to get reports'});
+    res.status(500).json({error:'faild to get reports'});
     
 }
 
@@ -122,17 +132,20 @@ report.get('/:id',authMiddleware,async (req , res) =>{
 
     try{
         const reportId = req.params.id
-        const { id : userId , role} = req.payload
+        const { id , role} = req.payload
+        console.log(req.payload);
+        
+        
 
         const dataRports = JSON.parse(await fs.promises.readFile('data/report.json','utf8'))
         
-        const report = dataRports.filter(r = r.id === userId )
+        const report = dataRports.filter(r => r.userId === reportId )
 
         if(!report){
            return res.status(400).json({error:'report not found'})
         }
 
-        if(role === 'agent' && report.userId !== userId){
+        if(role === 'agent' && report.userId !== id){
             return res.status(401).json({error : 'u dont have accses to this file'})
         }
 

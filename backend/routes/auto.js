@@ -9,8 +9,6 @@ auth.post('/login', async (req, res)=>{
 
     try{
     const {agentCode , password} = req.body
-    console.log(agentCode,password);
-    
 
     if(!agentCode  || !password){
 
@@ -20,7 +18,6 @@ auth.post('/login', async (req, res)=>{
         })
 
     }
-    console.log('hey');
     
     const data = JSON.parse(await fs.promises.readFile('data/users.json','utf8'))
    const user = data.find(u => u.agentCode === agentCode && u.password === password);
@@ -42,7 +39,6 @@ auth.post('/login', async (req, res)=>{
    return res.status(200).json({token:token,user:[user.id, user.agentCode, user.fullName, user.role]})
 }catch(err){ 
     console.log(err);
-     
     res.status(404).json({error:err})
 }
 

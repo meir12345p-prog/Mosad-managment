@@ -1,0 +1,47 @@
+body{
+    margin: 0;
+    padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    height: 100vh;
+    width: 100vw;
+    background-color: gray;
+}
+h1{
+    align-self: center;
+
+}
+
+.flex-users{
+    display: flex;
+    flex-direction: row;
+    gap: 25%;
+
+}
+
+.user-card{
+    background-color: aliceblue;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    color: black;
+    
+}
+
+table {
+    border-radius: 12px;
+  width: 100%;
+  margin-top: 5%;
+  background: white;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+th, td {
+  text-align: left;
+  padding: 8px;
+  border-bottom: 1px solid black;
+  color: black;
+}
+

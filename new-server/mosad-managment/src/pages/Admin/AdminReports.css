@@ -1,0 +1,44 @@
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+
+.search-card{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background-color: aliceblue;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    color: black;
+    margin-left: 30%;
+    
+}
+
+.nav{
+    display: flex;
+    justify-content: space-between;
+}
+
+.nav button{
+    margin-top: 10px;
+    margin-right: 10px;
+    border-radius: 12px;
+    padding: 20px;
+    background-color: azure;
+    
+}

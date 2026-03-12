@@ -10,7 +10,7 @@ export function readCsvBuffer(buffer) {
   return new Promise((resolve, reject) => {
     stream
       .pipe(csv({
-        headers : ["category", "urgency", "message"]
+       
       }))
       .on("data", (data) => {
         results.push(data);
