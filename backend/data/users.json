@@ -54,5 +54,13 @@
     "role": "agent",
     "password": "zir",
     "createdAt": "Wed Mar 11 2026"
+  },
+  {
+    "id": "3",
+    "agentCode": "123456",
+    "fullName": "moti",
+    "role": "admin",
+    "password": "nlgr",
+    "createdAt": "Thu Mar 12 2026"
   }
 ]

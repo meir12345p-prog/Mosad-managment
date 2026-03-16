@@ -56,7 +56,8 @@ report.post('/',authMiddleware, upload.single('image') , async (req, res) => {
 
 report.post('/csv' , authMiddleware , csvUpload.single('file') , async (req , res) =>{
     try{
-
+        console.log(req.file);
+        
         if(!req.file){
             return res.status(404).json({error:'there is no file csv'})
         }
